@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Espíritus Fortnite</title>
+<style>
+:root{--bg:#080615;--panel:#181137;--line:#3d3078;--txt:#faf8ff;--muted:#a69cc8;--violet:#9b6cff;--cyan:#58cfff;--green:#35d681}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:
+radial-gradient(circle at 18% 0,#2a105b 0,transparent 28%),
+radial-gradient(circle at 82% 4%,#112d5a 0,transparent 27%),
+linear-gradient(#09061c,#070611 62%);color:var(--txt);min-height:100vh}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid #352763;padding:46px 22px 33px;
+background:
+linear-gradient(90deg,rgba(5,4,18,.95),rgba(45,16,87,.72),rgba(8,6,27,.94)),
+radial-gradient(circle at 22% 45%,rgba(138,69,255,.45),transparent 24%),
+radial-gradient(circle at 77% 34%,rgba(52,198,255,.24),transparent 24%)}
+.hero:before{content:"🧙‍♂️  ✦  🪄  🧙‍♀️  ✨  🧙  ✦  🪄  🧙‍♂️";position:absolute;inset:8px 0 auto;text-align:center;font-size:48px;letter-spacing:20px;opacity:.11;filter:blur(.4px)}
+.hero:after{content:"✦  ✧  ✦  ✧  ✦  ✧  ✦  ✧";position:absolute;inset:auto 0 6px;text-align:center;font-size:34px;letter-spacing:32px;opacity:.15}
+.hero-inner{max-width:1250px;margin:auto;position:relative;z-index:2}
+h1{margin:0;font-size:clamp(38px,6vw,72px);font-weight:950;letter-spacing:-2px;background:linear-gradient(90deg,#c59aff,#7557ff,#66d6ff,#b67aff);-webkit-background-clip:text;color:transparent;text-shadow:0 0 30px rgba(151,88,255,.24)}
+.subtitle{color:#c7bee2;margin-top:8px}
+.controls{max-width:1250px;margin:20px auto 0;padding:0 18px;display:grid;grid-template-columns:1.3fr .75fr .75fr;gap:12px}
+.box{background:rgba(24,17,55,.92);border:1px solid #3f3278;border-radius:17px;padding:13px}
+input,select{width:100%;padding:13px 14px;border:1px solid #493a8b;border-radius:11px;background:#0d0922;color:white;outline:none}
+.stats{height:100%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.progress-wrap{max-width:1250px;margin:14px auto 24px;padding:0 18px}
+.progress{height:13px;background:#17102f;border:1px solid #382d69;border-radius:999px;overflow:hidden}
+.progress div{height:100%;background:linear-gradient(90deg,#744cff,#36d999);transition:.25s;width:0}
+.meta{display:flex;justify-content:space-between;align-items:center;color:#978eb5;font-size:13px;margin-top:8px}
+.reset{border:1px solid #493b88;background:#211945;color:#fff;border-radius:9px;padding:8px 11px;cursor:pointer}
+main{max-width:1250px;margin:auto;padding:0 18px 50px}
+.heading{display:flex;justify-content:space-between;align-items:end;margin:29px 0 14px} .heading h2{margin:0;font-size:29px} .count{color:#75d8ff;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{position:relative;min-height:285px;padding:15px;background:linear-gradient(180deg,#1b1441,#120d2c);border:1px solid #3e3374;border-radius:18px;transition:.2s;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:#725fc5}
+.card.owned{background:linear-gradient(180deg,rgba(30,103,70,.58),rgba(12,52,35,.60));border-color:#42dc8c}
+.check{position:absolute;top:13px;left:13px;width:29px;height:29px;border:2px solid #55c6ff;background:#0d0920;border-radius:8px;display:grid;place-items:center;font-weight:950;cursor:pointer;z-index:4}
+.owned .check{background:#25b870;border-color:#a1ffd0}
+.badge{position:absolute;right:12px;top:12px;font-size:11px;font-weight:900;letter-spacing:.5px;padding:5px 9px;border-radius:999px;background:#30255e;color:#d8ceff;z-index:4}
+.art{height:168px;display:grid;place-items:center;position:relative;margin-top:8px}
+.art img{width:158px;height:158px;max-width:100%;object-fit:contain;object-position:center center;display:block;margin:auto;filter:drop-shadow(0 12px 18px rgba(0,0,0,.42));transform:none}
+.placeholder{font-size:54px;font-weight:950;color:#ddd;background:linear-gradient(145deg,#1d1d25,#474752);width:95px;height:110px;border-radius:46% 46% 40% 40%;display:grid;place-items:center;box-shadow:0 12px 25px #0008}
+
+.name{font-size:17px;font-weight:950;text-align:center} .en{font-size:12px;color:#958bb4;font-style:italic;text-align:center;margin-top:3px} .variant{font-size:12px;color:#7edaff;text-align:center;font-weight:850;margin-top:9px}
+.empty{grid-column:1/-1;border:1px dashed #4b3d84;border-radius:15px;color:#968db3;text-align:center;padding:28px}
+.note{max-width:1250px;margin:0 auto 30px;padding:0 18px;color:#8e84aa;font-size:12px;line-height:1.5}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}.controls{grid-template-columns:1fr 1fr}.controls .box:first-child{grid-column:1/-1}}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.controls .box:first-child{grid-column:auto}}
+@media(max-width:450px){.grid{grid-template-columns:1fr}}
+
+/* ===== Retoque final: banner Fortnite + diseño compacto + móvil ===== */
+.hero{
+  min-height:220px;
+  padding:34px 18px 28px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg,rgba(8,5,28,.90),rgba(41,16,84,.58),rgba(8,5,28,.90)),
+    linear-gradient(180deg,rgba(6,4,20,.18),rgba(6,4,20,.78)),
+    url("https://cms-assets.unrealengine.com/cm6l5gfpm05kr07my04cqgy2x/resize%3Dfit%3Aclip%2Cwidth%3A1920/quality%3Dvalue%3A80/cmikev7fd4fq507ofjpu93nl7") center 34% / cover no-repeat;
+}
+.hero:before,.hero:after{display:none}
+.hero-inner{width:100%;text-align:center}
+h1{
+  font-size:clamp(38px,7vw,72px);
+  letter-spacing:-1.5px;
+  line-height:1;
+  text-align:center;
+}
+.subtitle{text-align:center;margin-top:10px;font-size:14px;text-shadow:0 2px 10px #000}
+
+.controls{
+  max-width:1320px;
+  margin:16px auto 0;
+  padding:0 14px;
+  grid-template-columns:minmax(260px,1.4fr) minmax(170px,.65fr) minmax(155px,.55fr);
+  gap:9px;
+}
+.box{padding:9px;border-radius:13px}
+input,select{padding:11px 12px;border-radius:9px;font-size:14px}
+.progress-wrap{max-width:1320px;margin:10px auto 18px;padding:0 14px}
+main{max-width:1320px;padding:0 14px 42px}
+.heading{margin:22px 0 11px}
+.heading h2{font-size:23px}
+
+.grid{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+}
+.card{
+  min-height:218px;
+  padding:11px;
+  border-radius:14px;
+}
+.check{
+  top:10px;left:10px;
+  width:25px;height:25px;
+  border-radius:7px;
+  font-size:14px;
+}
+.badge{
+  top:9px;right:9px;
+  padding:4px 7px;
+  font-size:9px;
+}
+.art{
+  height:122px;
+  margin-top:5px;
+}
+.art img{
+  width:116px;
+  height:116px;
+}
+.name{font-size:14px;line-height:1.15}
+.en{font-size:10px;margin-top:2px}
+.variant{font-size:10px;margin-top:6px}
+.note{max-width:1320px;padding:0 14px 24px;font-size:11px}
+
+.backup-row{
+  max-width:1320px;
+  margin:0 auto 10px;
+  padding:0 14px;
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+.action-btn{
+  appearance:none;border:1px solid #4b3d89;background:#211945;color:white;
+  padding:8px 11px;border-radius:9px;font-weight:750;font-size:12px;cursor:pointer;
+}
+.action-btn:hover{border-color:#725fc5}
+#importFile{display:none}
+
+@media (min-width:1450px){
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+
+@media (max-width:900px){
+  .hero{min-height:190px;background-position:center 35%}
+  .controls{grid-template-columns:1fr 1fr}
+  .controls .box:first-child{grid-column:1/-1}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+@media (max-width:650px){
+  body{-webkit-text-size-adjust:100%}
+  .hero{min-height:165px;padding:25px 12px 20px;background-position:center 32%}
+  h1{font-size:clamp(34px,11vw,52px)}
+  .subtitle{font-size:12px}
+  .controls{grid-template-columns:1fr;padding:0 10px}
+  .controls .box:first-child{grid-column:auto}
+  .progress-wrap,main,.backup-row{padding-left:10px;padding-right:10px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .card{min-height:186px;padding:8px;border-radius:12px}
+  .check{top:8px;left:8px;width:23px;height:23px}
+  .badge{top:7px;right:7px;font-size:8px;padding:3px 6px}
+  .art{height:100px;margin-top:8px}
+  .art img{width:96px;height:96px}
+  .name{font-size:13px}
+  .en{font-size:9px}
+  .variant{font-size:9px;margin-top:4px}
+  .heading{margin-top:18px}
+  .heading h2{font-size:20px}
+  .meta{font-size:11px}
+  .reset{padding:7px 9px;font-size:11px}
+  .backup-row{justify-content:stretch}
+  .action-btn{flex:1;min-width:135px}
+}
+
+@media (max-width:360px){
+  .grid{gap:6px}
+  .card{min-height:176px;padding:7px}
+  .art{height:92px}
+  .art img{width:88px;height:88px}
+  .name{font-size:12px}
+}
+
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-inner"><h1>Espíritus Fortnite</h1><div class="subtitle">Colección personal de espíritus y variantes</div></div></header>
+
+<section class="controls">
+ <div class="box"><input id="q" placeholder="Buscar espíritu o variante…"></div>
+ <div class="box"><select id="vf"><option value="all">Todas las variantes</option></select></div>
+ <div class="box"><div class="stats"><span id="nOwned">0</span>&nbsp;/&nbsp;<span id="totalCount">117</span> obtenidos</div></div>
+</section>
+
+<div class="progress-wrap"><div class="progress"><div id="bar"></div></div><div class="meta"><span id="pct">0% completado</span><button class="reset" id="reset">Reiniciar progreso</button></div></div>
+
+
+<div class="backup-row">
+  <button class="action-btn" id="exportProgress">Guardar copia del progreso</button>
+  <button class="action-btn" id="importProgress">Restaurar copia</button>
+  <input type="file" id="importFile" accept="application/json,.json">
+</div>
+
+<main>
+ <div class="heading"><h2>Espíritus obtenidos</h2><span class="count" id="ownedLabel">0</span></div>
+ <div class="grid" id="ownedGrid"></div>
+ <div class="heading"><h2>Espíritus restantes</h2><span class="count" id="remainLabel">117</span></div>
+ <div class="grid" id="remainGrid"></div>
+</main>
+
+<div class="note">
+Las imágenes de los espíritus se cargan desde Fortnite.GG y el banner usa arte oficial de Fortnite. 
+El progreso ahora se guarda usando una clave estable basada en <b>nombre + variante</b>, no por posición en la lista. 
+Eso permite agregar nuevos espíritus en futuras versiones sin alterar los que ya marcaste. 
+Además, podés guardar una copia JSON del progreso y restaurarla cuando quieras.
+</div>
+
+<script>
+const sprites=[{"id":1,"name":"Tierra","en":"Earth Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Ch7S3_UI_L.webp"},{"id":2,"name":"Fuego","en":"Fire Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Unvault_Ch7S3_ui_L.webp"},{"id":3,"name":"Agua","en":"Water Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Unvault_Ch7S3_ui_L.webp"},{"id":4,"name":"Pato","en":"Duck Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Duck_Default_L.webp"},{"id":5,"name":"Fantasma","en":"Ghost Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Ghost_Unvault_L.webp"},{"id":6,"name":"Demonio","en":"Demon Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_RedDemon_Default_L.webp"},{"id":7,"name":"Rey","en":"King Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_King_ui_L.webp"},{"id":8,"name":"Onírico","en":"Dream Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Sleepy_ui_L.webp"},{"id":9,"name":"Punk","en":"Punk Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Punk_ui_L.webp"},{"id":10,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_ui_L.webp"},{"id":11,"name":"Maní Quemado","en":"Burnt Peanut Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_BurntPeanut_ui_L.webp"},{"id":12,"name":"Delantero","en":"Striker Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Soccer_ui_L.webp"},{"id":13,"name":"Pez","en":"Fishy Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fishy_ui_L.webp"},{"id":14,"name":"Aura","en":"Aura Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Drifter_ui_L.webp"},{"id":15,"name":"Jefe","en":"Boss Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Boss_ui_L.webp"},{"id":16,"name":"Parca","en":"Grim Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Default_L.webp"},{"id":17,"name":"Aire","en":"Air Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Air_Default_L.webp"},{"id":18,"name":"Los Siete","en":"Seven Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Seven_ui_L.webp"},{"id":19,"name":"Batman","en":"Batman Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Default_L.webp"},{"id":20,"name":"Vini Jr.","en":"Vini Jr. Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_CokeParmesan_Default_L.webp"},{"id":21,"name":"Pollo","en":"Pollo Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_CompanyStargazer_Default_L.webp"},{"id":22,"name":"Llama Saqueadora","en":"Llama Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Llama_ui_L.webp"},{"id":23,"name":"Peely Espía","en":"Peely Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Peely_ui_L.webp"},{"id":24,"name":"Ironmouse","en":"Ironmouse Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_PedicureAntacid_L.webp"},{"id":25,"name":"John Wick","en":"John Wick Sprite","variant":"Base","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_Reload_FillerGrunt_icon_L.webp"},{"id":26,"name":"Batman","en":"Batman Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Gold_L.webp"},{"id":27,"name":"Agua","en":"Water Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Gold_ui_L.webp"},{"id":28,"name":"Tierra","en":"Earth Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Gold_ui_L.webp"},{"id":29,"name":"Fuego","en":"Fire Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Gold_ui_L.webp"},{"id":30,"name":"Pato","en":"Duck Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Duck_Gold_L.webp"},{"id":31,"name":"Fantasma","en":"Ghost Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Ghost_Gold_L.webp"},{"id":32,"name":"Onírico","en":"Dream Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Sleepy_Gold_ui_L.webp"},{"id":33,"name":"Demonio","en":"Demon Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_RedDemon_Gold_L.webp"},{"id":34,"name":"Punk","en":"Punk Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Punk_Gold_ui_L.webp"},{"id":35,"name":"Rey","en":"King Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_King_Gold_ui_L.webp"},{"id":36,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Gold_ui_L.webp"},{"id":37,"name":"Pez","en":"Fishy Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fishy_Gold_ui_L.webp"},{"id":38,"name":"Delantero","en":"Striker Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Soccer_Gold_L.webp"},{"id":39,"name":"Aura","en":"Aura Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Drifter_Gold_ui_L.webp"},{"id":40,"name":"Jefe","en":"Boss Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Boss_Gold_ui_L.webp"},{"id":41,"name":"Parca","en":"Grim Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Gold_L.webp"},{"id":42,"name":"Aire","en":"Air Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Air_Gold_L.webp"},{"id":43,"name":"Los Siete","en":"Seven Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Seven_Gold_ui_L.webp"},{"id":44,"name":"Llama Saqueadora","en":"Llama Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Llama_Gold_ui_L.webp"},{"id":45,"name":"Peely Espía","en":"Peely Sprite","variant":"Gold","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Peely_Gold_ui_L.webp"},{"id":46,"name":"Batman","en":"Batman Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Candy_L.webp"},{"id":47,"name":"Agua","en":"Water Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Candy_ui_L.webp"},{"id":48,"name":"Tierra","en":"Earth Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Candy_ui_L.webp"},{"id":49,"name":"Fuego","en":"Fire Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Candy_ui_L.webp"},{"id":50,"name":"Pato","en":"Duck Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Duck_Candy_L.webp"},{"id":51,"name":"Fantasma","en":"Ghost Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Ghost_Candy_L.webp"},{"id":52,"name":"Onírico","en":"Dream Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Sleepy_Candy_ui_L.webp"},{"id":53,"name":"Demonio","en":"Demon Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_RedDemon_Candy_L.webp"},{"id":54,"name":"Punk","en":"Punk Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Punk_Candy_ui_L.webp"},{"id":55,"name":"Rey","en":"King Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_King_Candy_ui_L.webp"},{"id":56,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Candy_ui_L.webp"},{"id":57,"name":"Pez","en":"Fishy Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fishy_Candy_ui_L.webp"},{"id":58,"name":"Delantero","en":"Striker Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Soccer_Candy_L.webp"},{"id":59,"name":"Aura","en":"Aura Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Drifter_Candy_ui_L.webp"},{"id":60,"name":"Jefe","en":"Boss Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Boss_Candy_ui_L.webp"},{"id":61,"name":"Parca","en":"Grim Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Candy_L.webp"},{"id":62,"name":"Aire","en":"Air Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Air_Candy_L.webp"},{"id":63,"name":"Los Siete","en":"Seven Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Seven_Candy_ui_L.webp"},{"id":64,"name":"Llama Saqueadora","en":"Llama Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Llama_Candy_ui_L.webp"},{"id":65,"name":"Peely Espía","en":"Peely Sprite","variant":"Gummy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Peely_Candy_ui_L.webp"},{"id":66,"name":"Batman","en":"Batman Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Galaxy_L.webp"},{"id":67,"name":"Agua","en":"Water Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Galaxy_ui_L.webp"},{"id":68,"name":"Tierra","en":"Earth Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Galaxy_ui_L.webp"},{"id":69,"name":"Fuego","en":"Fire Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Galaxy_ui_L.webp"},{"id":70,"name":"Pato","en":"Duck Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Duck_Galaxy_L.webp"},{"id":71,"name":"Fantasma","en":"Ghost Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Ghost_Galaxy_L.webp"},{"id":72,"name":"Onírico","en":"Dream Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Sleepy_Galaxy_ui_L.webp"},{"id":73,"name":"Demonio","en":"Demon Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_RedDemon_Galaxy_L.webp"},{"id":74,"name":"Punk","en":"Punk Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Punk_Galaxy_ui_L.webp"},{"id":75,"name":"Rey","en":"King Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_King_Galaxy_ui_L.webp"},{"id":76,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Galaxy_ui_L.webp"},{"id":77,"name":"Pez","en":"Fishy Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fishy_Galaxy_ui_L.webp"},{"id":78,"name":"Delantero","en":"Striker Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Soccer_Galaxy_L.webp"},{"id":79,"name":"Aura","en":"Aura Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Drifter_Galaxy_ui_L.webp"},{"id":80,"name":"Jefe","en":"Boss Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Boss_Galaxy_ui_L.webp"},{"id":81,"name":"Parca","en":"Grim Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Galaxy_L.webp"},{"id":82,"name":"Aire","en":"Air Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Air_Galaxy_L.webp"},{"id":83,"name":"Los Siete","en":"Seven Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Seven_Galaxy_ui_L.webp"},{"id":84,"name":"Llama Saqueadora","en":"Llama Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Llama_Galaxy_ui_L.webp"},{"id":85,"name":"Peely Espía","en":"Peely Sprite","variant":"Galaxy","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Peely_Galaxy_ui_L.webp"},{"id":86,"name":"Agua","en":"Water Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Gem_ui_L.webp"},{"id":87,"name":"Tierra","en":"Earth Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Gem_ui_L.webp"},{"id":88,"name":"Pato","en":"Duck Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Duck_Gem_L.webp"},{"id":89,"name":"Demonio","en":"Demon Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_RedDemon_Gem_L.webp"},{"id":90,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Gem_ui_L.webp"},{"id":91,"name":"Aura","en":"Aura Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Drifter_Gem_ui_L.webp"},{"id":92,"name":"Parca","en":"Grim Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Gem_L.webp"},{"id":93,"name":"Llama Saqueadora","en":"Llama Sprite","variant":"Gem","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Llama_Gem_ui_L.webp"},{"id":94,"name":"Batman","en":"Batman Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Holofoil_L.webp"},{"id":95,"name":"Agua","en":"Water Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Holofoil_ui_L.webp"},{"id":96,"name":"Fuego","en":"Fire Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Holofoil_ui_L.webp"},{"id":97,"name":"Fantasma","en":"Ghost Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Ghost_Holo_L.webp"},{"id":98,"name":"Rey","en":"King Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_King_Holofoil_ui_L.webp"},{"id":99,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Holofoil_ui_L.webp"},{"id":100,"name":"Delantero","en":"Striker Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Soccer_Holofoil_L.webp"},{"id":101,"name":"Parca","en":"Grim Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Holofoil_L.webp"},{"id":102,"name":"Aire","en":"Air Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Air_Holo_L.webp"},{"id":103,"name":"Los Siete","en":"Seven Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Seven_Holofoil_ui_L.webp"},{"id":104,"name":"Peely Espía","en":"Peely Sprite","variant":"Holofoil","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Peely_Holofoil_ui_L.webp"},{"id":105,"name":"Batman","en":"Batman Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_FossilMeal_Cube_L.webp"},{"id":106,"name":"Tierra","en":"Earth Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Cube_ui_L.webp"},{"id":107,"name":"Fuego","en":"Fire Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Cube_ui_L.webp"},{"id":108,"name":"Onírico","en":"Dream Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Sleepy_Cube_ui_L.webp"},{"id":109,"name":"Punk","en":"Punk Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Punk_Cube_ui_L.webp"},{"id":110,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Cube_ui_L.webp"},{"id":111,"name":"Pez","en":"Fishy Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fishy_Cube_L.webp"},{"id":112,"name":"Jefe","en":"Boss Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Boss_Cube_ui_L.webp"},{"id":113,"name":"Parca","en":"Grim Sprite","variant":"Cube","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_GrimReaper_Cube_L.webp"},{"id":114,"name":"Agua","en":"Water Sprite","variant":"Quack","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Water_Quack_ui_L.webp"},{"id":115,"name":"Tierra","en":"Earth Sprite","variant":"Quack","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Earth_Quack_ui_L.webp"},{"id":116,"name":"Fuego","en":"Fire Sprite","variant":"Quack","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Fire_Quack_ui_L.webp"},{"id":117,"name":"Punto Cero","en":"Zero Point Sprite","variant":"Quack","img":"https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPoint_Quack_ui_L.webp"}];
+const legacyKey="dwizzard720_sprite_tracker_v2";
+const key="fortnite_sprites_tracker_stable_v1";
+
+function spriteKey(s){ return `${s.name}::${s.variant}`; }
+
+function loadOwned(){
+  const stableRaw=localStorage.getItem(key);
+  if(stableRaw){
+    try { return new Set(JSON.parse(stableRaw)); } catch(e){}
+  }
+  // Migra automáticamente el progreso de la versión anterior (IDs 1-117).
+  try{
+    const oldIds=JSON.parse(localStorage.getItem(legacyKey)||"[]");
+    const migrated=new Set();
+    oldIds.forEach(id=>{
+      const s=sprites.find(x=>x.id===id);
+      if(s) migrated.add(spriteKey(s));
+    });
+    if(migrated.size) localStorage.setItem(key,JSON.stringify([...migrated]));
+    return migrated;
+  }catch(e){ return new Set(); }
+}
+let owned=loadOwned();
+const og=document.getElementById("ownedGrid"), rg=document.getElementById("remainGrid"), q=document.getElementById("q"), vf=document.getElementById("vf");
+[...new Set(sprites.map(s=>s.variant))].forEach(v=>{let o=document.createElement("option");o.value=v;o.textContent=v;vf.appendChild(o)});
+
+function card(s){
+ const el=document.createElement("article");
+ el.className="card v-"+s.variant+(owned.has(spriteKey(s))?" owned":"");
+ el.innerHTML=`<div class="check">${owned.has(spriteKey(s))?"✓":""}</div><div class="badge">${s.variant}</div>
+ <div class="art">${s.img?`<img src="${s.img}" alt="${s.variant} ${s.name}">`:`<div class="placeholder">JW</div>`}</div>
+ <div class="name">${s.name}</div><div class="en">${s.en}</div><div class="variant">${s.variant==="Base"?"Espíritu base":"Variante "+s.variant}</div>`;
+ el.querySelector(".check").onclick=()=>toggle(spriteKey(s)); el.ondblclick=()=>toggle(spriteKey(s)); return el;
+}
+function toggle(k){owned.has(k)?owned.delete(k):owned.add(k);localStorage.setItem(key,JSON.stringify([...owned]));render()}
+function render(){
+ let txt=q.value.toLowerCase().trim(), f=vf.value;
+ let vis=sprites.filter(s=>(s.name+" "+s.en+" "+s.variant).toLowerCase().includes(txt)&&(f==="all"||s.variant===f));
+ let a=vis.filter(s=>owned.has(spriteKey(s))), b=vis.filter(s=>!owned.has(spriteKey(s))); og.innerHTML="";rg.innerHTML="";
+ a.forEach(s=>og.appendChild(card(s)));b.forEach(s=>rg.appendChild(card(s)));
+ if(!a.length)og.innerHTML='<div class="empty">No hay espíritus obtenidos con este filtro.</div>';
+ if(!b.length)rg.innerHTML='<div class="empty">No quedan espíritus pendientes con este filtro. 🎉</div>';
+ document.getElementById("nOwned").textContent=owned.size;document.getElementById("ownedLabel").textContent=owned.size;document.getElementById("remainLabel").textContent=sprites.length-owned.size;document.getElementById("totalCount").textContent=sprites.length;
+ let p=Math.round(owned.size/sprites.length*100);document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"% completado";
+}
+q.oninput=render;vf.onchange=render;document.getElementById("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso?")){owned.clear();localStorage.removeItem(key);localStorage.removeItem(legacyKey);render()}};
+
+document.getElementById("exportProgress").onclick=()=>{
+  const payload={
+    app:"Espiritus Fortnite",
+    version:1,
+    savedAt:new Date().toISOString(),
+    owned:[...owned]
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="espiritus-fortnite-progreso.json";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+
+const importInput=document.getElementById("importFile");
+document.getElementById("importProgress").onclick=()=>importInput.click();
+importInput.onchange=async()=>{
+  const file=importInput.files&&importInput.files[0];
+  if(!file)return;
+  try{
+    const data=JSON.parse(await file.text());
+    if(!Array.isArray(data.owned)) throw new Error("Formato inválido");
+    owned=new Set(data.owned);
+    localStorage.setItem(key,JSON.stringify([...owned]));
+    render();
+    alert("Progreso restaurado correctamente.");
+  }catch(e){
+    alert("No pude restaurar ese archivo de progreso.");
+  }
+  importInput.value="";
+};
+
+render();
+</script>
+</body></html>
